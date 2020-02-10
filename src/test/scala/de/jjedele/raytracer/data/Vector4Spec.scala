@@ -65,4 +65,28 @@ class Vector4Spec extends AnyFlatSpec with Matchers with VectorMatchers {
     Vector4.vector(1, -2, 3) / 2 should approximatelyEqual (Vector4.vector(0.5, -1, 1.5))
   }
 
+  it should "return the magnitude" in {
+    Vector4.vector(1, 0, 0).magnitude shouldBe 1
+    Vector4.vector(0, 1, 0).magnitude shouldBe 1
+    Vector4.vector(0, 0, 1).magnitude shouldBe 1
+    Vector4.vector(1, 2, 3).magnitude shouldBe Math.sqrt(14) +- 1e-4
+    Vector4.vector(-1, -2, -3).magnitude shouldBe Math.sqrt(14) +- 1e-4
+  }
+
+  it should "normalize to unit length" in {
+    Vector4.vector(4, 0, 0).normalized should approximatelyEqual (Vector4.vector(1, 0, 0))
+    Vector4.vector(1, 2, 3).normalized should approximatelyEqual(Vector4.vector(0.26726, 0.53452, 0.80178))
+
+    Vector4.vector(1, 2, 3).normalized.magnitude shouldBe 1.0 +- 1e-4
+  }
+
+  it should "compute dot products" in {
+    Vector4.vector(1, 2, 3) dot Vector4.vector(2, 3, 4) shouldBe 20.0 +- 1e-4
+  }
+
+  it should "compute cross products" in {
+    Vector4.vector(1, 2, 3) cross Vector4.vector(2, 3, 4) should approximatelyEqual (Vector4.vector(-1, 2, -1))
+    Vector4.vector(2, 3, 4) cross Vector4.vector(1, 2, 3) should approximatelyEqual (Vector4.vector(1, -2, 1))
+  }
+
 }

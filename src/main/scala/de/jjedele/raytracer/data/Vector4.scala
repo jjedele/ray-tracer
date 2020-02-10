@@ -16,6 +16,26 @@ case class Vector4 private (data: Array[Double]) extends AnyVal {
   def isVector: Boolean = data(3) == 0
 
   /**
+   * @return The x coordinate.
+   */
+  def x: Double = data(0)
+
+  /**
+   * @return The y coordinate.
+   */
+  def y: Double = data(1)
+
+  /**
+   * @return The z coordinate.
+   */
+  def z: Double = data(2)
+
+  /**
+   * @return The w coordinate.
+   */
+  def w: Double = data(3)
+
+  /**
    * Apply an operation element-wise to combine 2 vectors.
    *
    * @param other Second vector.
@@ -67,6 +87,30 @@ case class Vector4 private (data: Array[Double]) extends AnyVal {
     map(_ * scalar)
 
   /**
+   * Calculate dot/inner product of two vectors.
+   *
+   * @param other Other vector.
+   * @return Dot product.
+   */
+  def dot(other: Vector4): Double =
+    zipWith(other, _ * _).data.sum
+
+  /**
+   * Calculate cross product of two vectors.
+   *
+   * The cross product is perpendicular to the two given vectors.
+   * It is not commutative.
+   *
+   * @param other Other vector.
+   * @return Cross product.
+   */
+  def cross(other: Vector4): Vector4 =
+    Vector4.vector(
+      y * other.z - z * other.y,
+      z * other.x - x * other.z,
+      x * other.y - y * other.x)
+
+  /**
    * Scalar division.
    *
    * @param scalar
@@ -84,7 +128,19 @@ case class Vector4 private (data: Array[Double]) extends AnyVal {
   def approximatelyEquals(other: Vector4): Boolean =
     zipWith(other, absoluteDifference).data.sum < Vector4.Epsilon
 
-  private def absoluteDifference(a: Double, b: Double): Double = Math.abs(b - a)
+  private def absoluteDifference(a: Double, b: Double): Double = Math.abs(a - b)
+
+  /**
+   * @return Magnitude of the vector.
+   */
+  def magnitude: Double =
+    Math.sqrt(data.map(Math.pow(_, 2)).sum)
+
+  /**
+   * @return Vector normalized to unit length.
+   */
+  def normalized: Vector4 =
+    this / magnitude
 
   /**
    * @return String representation of vector.
@@ -98,7 +154,7 @@ case class Vector4 private (data: Array[Double]) extends AnyVal {
  */
 object Vector4 {
 
-  private val Epsilon = 1e-8
+  private val Epsilon = 1e-4
 
   private def apply(x: Double, y: Double, z: Double, w: Double): Vector4 = Vector4(Array(x, y, z, w))
 
