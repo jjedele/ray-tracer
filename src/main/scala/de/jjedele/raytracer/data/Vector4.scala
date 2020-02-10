@@ -18,41 +18,78 @@ case class Vector4 private (data: Array[Double]) extends AnyVal {
   /**
    * Apply an operation element-wise to combine 2 vectors.
    *
-   * @param other The second vector.
-   * @param f The element-wise combination function.
-   * @return A new vector containing the result.
+   * @param other Second vector.
+   * @param f Element-wise combination function.
+   * @return New vector containing the result.
    */
-  def applyElementWise(other: Vector4, f: (Double, Double) => Double): Vector4 =
+  def zipWith(other: Vector4, f: (Double, Double) => Double): Vector4 =
     Vector4((data, other.data).zipped.map(f).toArray)
+
+  /**
+   * Apply function element-wise.
+   *
+   * @param f Function to apply.
+   * @return New vector.
+   */
+  def map(f: Double => Double): Vector4 =
+    Vector4(data.map(f))
 
   /**
    * Element-wise add 2 vectors.
    *
    * @param other The other vector.
-   * @return A new vector representing the sum.
+   * @return New vector representing the sum.
    */
   def +(other: Vector4): Vector4 =
-    applyElementWise(other, _ + _)
+    zipWith(other, _ + _)
 
   /**
    * Element-wise subtract 2 vectors.
    *
-   * @param other The other vector.
-   * @return A new vector representing the difference.
+   * @param other Other vector.
+   * @return New vector representing the difference.
    */
   def -(other: Vector4): Vector4 =
-    applyElementWise(other, _ - _)
+    zipWith(other, _ - _)
+
+  /**
+   * @return Negated vector.
+   */
+  def unary_-(): Vector4 = Vector4(data.map(-_))
+
+  /**
+   * Scalar multiplication.
+   *
+   * @param scalar
+   * @return Scaled vector.
+   */
+  def *(scalar: Double): Vector4 =
+    map(_ * scalar)
+
+  /**
+   * Scalar division.
+   *
+   * @param scalar
+   * @return Scaled vector.
+   */
+  def /(scalar: Double): Vector4 =
+    map(_ / scalar)
 
   /**
    * Compare two vectors for approximate equality.
    *
-   * @param other The other vector.
+   * @param other Other vector.
    * @return True if the vector coordinates do not differ by more than a tiny error.
    */
   def approximatelyEquals(other: Vector4): Boolean =
-    applyElementWise(other, absoluteDifference).data.sum < Vector4.Epsilon
+    zipWith(other, absoluteDifference).data.sum < Vector4.Epsilon
 
   private def absoluteDifference(a: Double, b: Double): Double = Math.abs(b - a)
+
+  /**
+   * @return String representation of vector.
+   */
+  override def toString: String = data.mkString("[", ", ", "]")
 
 }
 
