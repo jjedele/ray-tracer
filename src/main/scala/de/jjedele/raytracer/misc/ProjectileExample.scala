@@ -1,6 +1,6 @@
 package de.jjedele.raytracer.misc
 
-import de.jjedele.raytracer.data.Vector4
+import de.jjedele.raytracer.data.Matrix
 import org.scalajs.dom.{CanvasRenderingContext2D, document}
 import org.scalajs.dom.html.Canvas
 
@@ -11,9 +11,11 @@ import org.scalajs.dom.html.Canvas
  */
 object ProjectileExample {
 
-  case class Projectile(position: Vector4, velocity: Vector4)
+  import Matrix._
 
-  case class Environment(gravity: Vector4, wind: Vector4)
+  case class Projectile(position: Vector, velocity: Vector)
+
+  case class Environment(gravity: Vector, wind: Vector)
 
   def tick(projectile: Projectile, environment: Environment): Projectile =
     Projectile(
@@ -22,12 +24,12 @@ object ProjectileExample {
 
   def main(args: Array[String]): Unit = {
     val environment = Environment(
-      Vector4.vector(0, -0.1, 0),
-      Vector4.vector(-0.01, 0, 0))
+      direction(0, -0.1, 0),
+      direction(-0.01, 0, 0))
 
     var projectile = Projectile(
-      Vector4.point(0, 2, 0),
-      Vector4.vector(1, 1, 0).normalized)
+      point(0, 2, 0),
+      direction(1, 1, 0).normalized)
 
     val canvas = document.createElement("canvas").asInstanceOf[Canvas]
     canvas.width = 500
@@ -37,9 +39,9 @@ object ProjectileExample {
     val ctx = canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
     ctx.fillStyle = "rgb(0, 0, 0)"
 
-    while (projectile.position.y > 0) {
+    while (projectile.position(1) > 0) {
       println(projectile.position)
-      ctx.fillRect(projectile.position.x * 20, 100 - projectile.position.y * 20, 1, 1)
+      ctx.fillRect(projectile.position(0) * 20, 100 - projectile.position(1) * 20, 1, 1)
       projectile = tick(projectile, environment)
     }
   }

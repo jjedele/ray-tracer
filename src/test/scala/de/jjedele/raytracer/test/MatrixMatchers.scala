@@ -1,13 +1,13 @@
 package de.jjedele.raytracer.test
 
-import de.jjedele.raytracer.data.Vector4
+import de.jjedele.raytracer.data.Matrix
 import org.scalatest.matchers.{MatchResult, Matcher}
 
-trait VectorMatchers {
+trait MatrixMatchers {
 
-  class ApproximatelyEqualsMatcher(expected: Vector4) extends Matcher[Vector4] {
+  class ApproximatelyEqualsMatcher(expected: Matrix) extends Matcher[Matrix] {
 
-    def apply(actual: Vector4) =
+    def apply(actual: Matrix) =
       MatchResult(
         actual approximatelyEquals expected,
         s"""$actual did not approximately equal $expected""",
@@ -15,6 +15,6 @@ trait VectorMatchers {
 
   }
 
-  def approximatelyEqual(expected: Vector4) = new ApproximatelyEqualsMatcher(expected)
+  def approximatelyEqual(expected: Matrix) = new ApproximatelyEqualsMatcher(expected)
 
 }
