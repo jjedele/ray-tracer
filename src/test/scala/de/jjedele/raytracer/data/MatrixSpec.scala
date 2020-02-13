@@ -43,6 +43,13 @@ class MatrixSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
     a matmul b should approximatelyEqual (columnVector(50, 122))
   }
 
+  it should "multiply element-wise" in {
+    val c1 = color(1, 0.2, 0.4)
+    val c2 = color(0.9, 1, 0.1)
+
+    c1 hadamard c2 should approximatelyEqual (color(0.9, 0.2, 0.04))
+  }
+
   "A vector" should "identify as point if it is one" in {
     point(1, 1, 1).isProjectivePoint shouldBe true
   }

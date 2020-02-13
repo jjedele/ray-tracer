@@ -72,16 +72,25 @@ class Matrix(val rows: Int, val columns: Int, val data: Array[Double], val isTra
   }
 
   /**
+   * Calculate the Hadamard, i.e. element-wise, product between two matrices.
+   *
+   * @param other Other matrix.
+   * @return Product matrix.
+   */
+  def hadamard(other: Matrix): Matrix = {
+    require(rows == other.rows && columns == other.columns, "dimensions do not match")
+
+    new Matrix(rows, columns, (data, other.data).zipped.map(_ * _).toArray, isTransposed)
+  }
+
+  /**
    * Calculate inner product of two matrices.
    *
    * @param other Other matrix.
    * @return Inner product.
    */
-  def inner(other: Matrix): Double = {
-    require(rows == other.rows && columns == other.columns, "dimensions do not match")
-
-    (data, other.data).zipped.map(_ * _).sum
-  }
+  def inner(other: Matrix): Double =
+    hadamard(other).data.sum
 
   /**
    * @return Readable representation.
@@ -251,6 +260,20 @@ object Matrix {
    */
   def direction(dx: Double, dy: Double, dz: Double): Vector = columnVector(dx, dy, dz, 0.0)
 
+  /**
+   * Create a color vector.
+   * @param red Red value.
+   * @param green Green value.
+   * @param blue Blue value.
+   * @return Vector.
+   */
+  def color(red: Double, green: Double, blue: Double): Vector = columnVector(red, green, blue)
+
+  /**
+   * Create a matrix.
+   * @param data Data in row-major nested array representation.
+   * @return Matrix.
+   */
   def matrix(data: Seq[Double]*): Matrix = {
     require(data.nonEmpty, "matrix is empty")
     require(data.map(_.length).forall(_ == data.head.length), "rows are not of equal length")
