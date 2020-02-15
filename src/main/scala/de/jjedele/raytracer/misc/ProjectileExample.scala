@@ -1,8 +1,10 @@
 package de.jjedele.raytracer.misc
 
+import java.io.PrintWriter
+
+import de.jjedele.raytracer.{Canvas, JSConverters}
 import de.jjedele.raytracer.data.Matrix
-import org.scalajs.dom.{CanvasRenderingContext2D, document}
-import org.scalajs.dom.html.Canvas
+import org.scalajs.dom
 
 /**
  * Example of a flying projectile.
@@ -17,6 +19,7 @@ object ProjectileExample {
 
   case class Environment(gravity: Vector, wind: Vector)
 
+  // forward projectile by one time step
   def tick(projectile: Projectile, environment: Environment): Projectile =
     Projectile(
       (projectile.position + projectile.velocity).map(Math.max(_, 0)), // clip to 0
@@ -24,26 +27,31 @@ object ProjectileExample {
 
   def main(args: Array[String]): Unit = {
     val environment = Environment(
-      direction(0, -0.1, 0),
-      direction(-0.01, 0, 0))
+      gravity = direction(0, -0.1, 0),
+      wind = direction(-0.01, 0, 0))
 
     var projectile = Projectile(
-      point(0, 2, 0),
-      direction(1, 1, 0).normalized)
+      position = point(0, 1, 0),
+      velocity = direction(1, 1.8, 0).normalized * 11.25)
 
-    val canvas = document.createElement("canvas").asInstanceOf[Canvas]
-    canvas.width = 500
-    canvas.height = 500
-    document.body.appendChild(canvas)
+    val canvas = new Canvas(height = 500, width = 900)
 
-    val ctx = canvas.getContext("2d").asInstanceOf[CanvasRenderingContext2D]
-    ctx.fillStyle = "rgb(0, 0, 0)"
-
+    val red = color(1.0, 0, 0)
     while (projectile.position(1) > 0) {
-      println(projectile.position)
-      ctx.fillRect(projectile.position(0) * 20, 100 - projectile.position(1) * 20, 1, 1)
+      canvas.paint(
+        projectile.position(0).toInt,
+        projectile.position(1).toInt,
+        red
+      )
+
       projectile = tick(projectile, environment)
     }
+
+//    val writer = new PrintWriter("projectile.ppm")
+//    writer.write(canvas.ppm)
+//    writer.close()
+
+    dom.document.body.appendChild(JSConverters.toHTMLCanvas(canvas))
   }
 
 }
