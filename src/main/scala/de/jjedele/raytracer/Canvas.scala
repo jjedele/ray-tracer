@@ -1,7 +1,5 @@
 package de.jjedele.raytracer
 
-import de.jjedele.raytracer.data.Matrix
-
 /**
  * A canvas is a mutable 2D array of pixels.
  *

@@ -1,6 +1,5 @@
 package de.jjedele.raytracer
 
-import de.jjedele.raytracer.data.Matrix
 import de.jjedele.raytracer.test.MatrixMatchers
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

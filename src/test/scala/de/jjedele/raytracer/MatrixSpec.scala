@@ -1,4 +1,4 @@
-package de.jjedele.raytracer.data
+package de.jjedele.raytracer
 
 import de.jjedele.raytracer.test.MatrixMatchers
 import org.scalatest.flatspec.AnyFlatSpec

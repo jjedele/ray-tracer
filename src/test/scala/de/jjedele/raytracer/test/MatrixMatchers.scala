@@ -1,6 +1,6 @@
 package de.jjedele.raytracer.test
 
-import de.jjedele.raytracer.data.Matrix
+import de.jjedele.raytracer.Matrix
 import org.scalatest.matchers.{MatchResult, Matcher}
 
 trait MatrixMatchers {

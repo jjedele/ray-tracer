@@ -2,8 +2,7 @@ package de.jjedele.raytracer.misc
 
 import java.io.PrintWriter
 
-import de.jjedele.raytracer.{Canvas, JSConverters}
-import de.jjedele.raytracer.data.Matrix
+import de.jjedele.raytracer.{Canvas, JSConverters, Matrix}
 import org.scalajs.dom
 
 /**

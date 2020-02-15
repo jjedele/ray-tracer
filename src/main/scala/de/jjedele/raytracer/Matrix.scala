@@ -1,5 +1,4 @@
-package de.jjedele.raytracer.data
-
+package de.jjedele.raytracer
 
 /**
  * Our representation for matrices and vectors.
