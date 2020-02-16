@@ -1,4 +1,4 @@
-# The Ray Rracer Challenge
+# The Ray Tracer Challenge
 
 My attempt to follow Jamis Buck's (@jamis) awesome [ray tracer challenge](https://pragprog.com/book/jbtracer/the-ray-tracer-challenge)
 in [ScalaJS](https://www.scala-js.org).
