@@ -117,8 +117,17 @@ class Matrix(val rows: Int, val columns: Int, val data: Array[Double], val isTra
   def zipWith(other: Matrix, f: (Double, Double) => Double): Matrix = {
     assume(this.rows == other.rows)
     assume(this.columns == other.columns)
-    new Matrix(rows, columns, (data, other.data).zipped.map(f).toArray, isTransposed)
+    val elements = for (r <- 0 until this.rows; c <- 0 until this.columns) yield (this(r, c), other(r, c))
+    new Matrix(rows, columns, elements.map(Function.tupled(f)).toArray, isTransposed)
   }
+
+  /**
+   * Zip the matrix elements with their 2d indexes.
+   *
+   * @return
+   */
+  def zipWithIndex(): Iterable[((Int, Int), Double)] =
+    for (row <- (0 until rows); col <- (0 until columns)) yield ((row, col), apply(row, col))
 
   /**
    * Compare two matrices for approximate equality.
@@ -203,6 +212,84 @@ class Matrix(val rows: Int, val columns: Int, val data: Array[Double], val isTra
   }
 
   /**
+   * Return submatrix.
+   *
+   * A submatrix is a smaller matrix where given row and column are removed.
+   *
+   * @param row
+   * @param column
+   * @return
+   */
+  def submatrix(row: Int, column: Int): Matrix =
+    new Matrix(
+      rows - 1,
+      columns - 1,
+      zipWithIndex()
+        .filter { case ((rowIdx, colIdx), _) => rowIdx != row && colIdx != column}
+        .map(_._2)
+        .toArray)
+
+  /**
+   * Calculate the minor at given position, i.e. the determinant of the submatrix.
+   *
+   * @param row
+   * @param column
+   * @return
+   */
+  def minor(row: Int, column: Int): Double =
+    submatrix(row, column).determinant
+
+  /**
+   * Calculate the cofactor at given position.
+   * @param row
+   * @param column
+   * @return
+   */
+  def cofactor(row: Int, column: Int): Double =
+    if ((row + column) % 2 == 1) -minor(row, column) else minor(row, column)
+
+  /**
+   * Calculate matrix of cofactors.
+   * @return
+   */
+  def cofactorMatrix: Matrix = {
+    val cofactors = for (r <- 0 until rows; c <- 0 until columns) yield cofactor(r, c)
+    new Matrix(rows, columns, cofactors.toArray)
+  }
+
+  /**
+   * Calculate determinant of matrix.
+   *
+   * The determinant describes the size of the transformation.
+   * Transformations with determinant 0 are destructive and can not be inverted.
+   * @return
+   */
+  def determinant: Double = {
+    require(rows == columns)
+    if (rows == 2)
+      this(0, 0) * this(1, 1) - this(0, 1) * this(1, 0)
+    else
+      (0 until columns)
+        .map(col => apply(0, col) * cofactor(0, col))
+        .sum
+  }
+
+  /**
+   * Calculate the matrix inverse.
+   *
+   * @return Matrix inverse or None if not invertible.
+   */
+  def inverse: Option[Matrix] = {
+    val det = determinant
+
+    if (det == 0) {
+      None
+    } else {
+      Some(cofactorMatrix.transposed / det)
+    }
+  }
+
+  /**
    * @return True if matrix is a vector.
    */
   def isVector: Boolean = isColumnVector || isRowVector
@@ -277,6 +364,16 @@ object Matrix {
     require(data.nonEmpty, "matrix is empty")
     require(data.map(_.length).forall(_ == data.head.length), "rows are not of equal length")
     new Matrix(data.size, data(0).size, data.flatMap(identity).toArray)
+  }
+
+  /**
+   * Create identity matrix.
+   * @param size
+   * @return
+   */
+  def identityMatrix(size: Int): Matrix = {
+    val data = for (i <- 0 until size; j <- 0 until size) yield if (i == j) 1.0 else 0.0
+    new Matrix(size, size, data.toArray)
   }
 
 }
