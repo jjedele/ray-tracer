@@ -99,7 +99,7 @@ class Transform(transforms: List[Matrix]) {
   private def xRotationMatrix(rad: Double): Matrix =
     matrix(
       Vector(1, 0, 0, 0),
-      Vector(0, math.cos(rad), -math.cos(rad), 0),
+      Vector(0, math.cos(rad), -math.sin(rad), 0),
       Vector(0, math.sin(rad), math.cos(rad), 0),
       Vector(0, 0, 0, 1))
 

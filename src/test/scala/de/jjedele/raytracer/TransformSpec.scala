@@ -135,4 +135,31 @@ class TransformSpec extends AnyFlatSpec with Matchers with MatrixMatchers with O
     tzy(p) should approximatelyEqual (point(2, 3, 7))
   }
 
+  it should "apply individual transformations in order" in {
+    val p = point(1, 0, 1)
+
+    val t1 = Transform().xRotate(math.Pi / 2)
+    val p1 = t1(p)
+    p1 should approximatelyEqual (point(1, -1, 0))
+
+    val t2 = Transform().scale(5, 5, 5)
+    val p2 = t2(p1)
+    p2 should approximatelyEqual (point(5, -5, 0))
+
+    val t3 = Transform().translate(10, 5, 7)
+    val p3 = t3(p2)
+    p3 should approximatelyEqual (point(15, 0, 7))
+  }
+
+  it should "apply chained transformations" in {
+    val p = point(1, 0, 1)
+
+    val t = Transform()
+      .xRotate(math.Pi / 2)
+      .scale(5, 5, 5)
+      .translate(10, 5, 7)
+
+    t(p) should approximatelyEqual (point(15, 0, 7))
+  }
+
 }
