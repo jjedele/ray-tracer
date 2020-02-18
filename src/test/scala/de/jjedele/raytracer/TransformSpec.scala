@@ -67,4 +67,44 @@ class TransformSpec extends AnyFlatSpec with Matchers with MatrixMatchers with O
     rt(p) should approximatelyEqual (point(4, 6 ,8))
   }
 
+  it should "rotate points around the x-axis" in {
+    val p = point(0, 1, 0)
+
+    val halfQuarterRotation = Transform()
+      .xRotate(math.Pi / 4)
+    val fullQuarterRotation = halfQuarterRotation
+      .xRotate(math.Pi / 4)
+
+    halfQuarterRotation(p) should approximatelyEqual (point(0, math.sqrt(2) / 2, math.sqrt(2) / 2))
+    fullQuarterRotation(p) should approximatelyEqual (point(0, 0, 1))
+
+    val halfQuarterRotationInv = halfQuarterRotation.inverse().value
+
+    halfQuarterRotationInv(point(0, 0, 1)) should approximatelyEqual (point(0, math.sqrt(2) / 2, math.sqrt(2) / 2))
+  }
+
+  it should "rotate points around the y-axis" in {
+    val p = point(0, 0, 1)
+
+    val halfQuarterRotation = Transform()
+      .yRotate(math.Pi / 4)
+    val fullQuarterRotation = halfQuarterRotation
+      .yRotate(math.Pi / 4)
+
+    halfQuarterRotation(p) should approximatelyEqual (point(math.sqrt(2) / 2, 0, math.sqrt(2) / 2))
+    fullQuarterRotation(p) should approximatelyEqual (point(1, 0, 0))
+  }
+
+  it should "rotate points around the z-axis" in {
+    val p = point(0, 1, 0)
+
+    val halfQuarterRotation = Transform()
+      .zRotate(math.Pi / 4)
+    val fullQuarterRotation = halfQuarterRotation
+      .zRotate(math.Pi / 4)
+
+    halfQuarterRotation(p) should approximatelyEqual (point(-math.sqrt(2) / 2, math.sqrt(2) / 2, 0))
+    fullQuarterRotation(p) should approximatelyEqual (point(-1, 0, 0))
+  }
+
 }

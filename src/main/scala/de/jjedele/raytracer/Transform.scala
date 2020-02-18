@@ -45,6 +45,30 @@ class Transform(transforms: List[Matrix]) {
   def scale(sx: Double, sy: Double, sz: Double): Transform =
     new Transform(scalingMatrix(sx, sy, sz) +: transforms)
 
+  /**
+   * Rotate point around x-axis.
+   * @param rad Angle in radians.
+   * @return
+   */
+  def xRotate(rad: Double): Transform =
+    new Transform(xRotationMatrix(rad) +: transforms)
+
+  /**
+   * Rotate point around y-axis.
+   * @param rad Angle in radians.
+   * @return
+   */
+  def yRotate(rad: Double): Transform =
+    new Transform(yRotationMatrix(rad) +: transforms)
+
+  /**
+   * Rotate point around z-axis.
+   * @param rad Angle in radians.
+   * @return
+   */
+  def zRotate(rad: Double): Transform =
+    new Transform(zRotationMatrix(rad) +: transforms)
+
   private def translationMatrix(dx: Double, dy: Double, dz: Double): Matrix =
     matrix(
       Vector(1, 0, 0, dx),
@@ -58,6 +82,28 @@ class Transform(transforms: List[Matrix]) {
       Vector(0, sy, 0, 0),
       Vector(0, 0, sz, 0),
       Vector(0, 0, 0, 1))
+
+  private def xRotationMatrix(rad: Double): Matrix =
+    matrix(
+      Vector(1, 0, 0, 0),
+      Vector(0, math.cos(rad), -math.cos(rad), 0),
+      Vector(0, math.sin(rad), math.cos(rad), 0),
+      Vector(0, 0, 0, 1))
+
+  private def yRotationMatrix(rad: Double): Matrix =
+    matrix(
+      Vector(math.cos(rad), 0, math.sin(rad), 0),
+      Vector(0, 1, 0, 0),
+      Vector(-math.sin(rad), 0, math.cos(rad), 0),
+      Vector(0, 0, 0, 1))
+
+  private def zRotationMatrix(rad: Double): Matrix =
+    matrix(
+      Vector(math.cos(rad), -math.sin(rad), 0, 0),
+      Vector(math.sin(rad), math.cos(rad), 0, 0),
+      Vector(0, 0, 1, 0),
+      Vector(0, 0, 0, 1)
+    )
 
 }
 
