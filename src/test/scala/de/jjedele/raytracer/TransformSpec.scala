@@ -107,4 +107,32 @@ class TransformSpec extends AnyFlatSpec with Matchers with MatrixMatchers with O
     fullQuarterRotation(p) should approximatelyEqual (point(-1, 0, 0))
   }
 
+  it should "shear points" in {
+    val p = point(2, 3, 4)
+
+    val txy = Transform()
+        .shear(xY = 1)
+    txy(p) should approximatelyEqual (point(5, 3, 4))
+
+    val txz = Transform()
+        .shear(xZ = 1)
+    txz(p) should approximatelyEqual (point(6, 3, 4))
+
+    val tyx = Transform()
+        .shear(yX = 1)
+    tyx(p) should approximatelyEqual (point(2, 5, 4))
+
+    val tyz = Transform()
+        .shear(yZ = 1)
+    tyz(p) should approximatelyEqual (point(2, 7, 4))
+
+    val tzx = Transform()
+        .shear(zX = 1)
+    tzx(p) should approximatelyEqual (point(2, 3, 6))
+
+    val tzy = Transform()
+        .shear(zY = 1)
+    tzy(p) should approximatelyEqual (point(2, 3, 7))
+  }
+
 }
