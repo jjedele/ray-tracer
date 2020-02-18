@@ -7,6 +7,8 @@ package de.jjedele.raytracer
  */
 class Transform(transforms: List[Matrix]) {
 
+  import Matrix._
+
   lazy val combined = transforms.reduceLeft(_ matmul _)
 
   /**
@@ -33,11 +35,28 @@ class Transform(transforms: List[Matrix]) {
   def translate(dx: Double, dy: Double, dz: Double): Transform =
     new Transform(translationMatrix(dx, dy, dz) +: transforms)
 
+  /**
+   * Scale point or vector by given factors.
+   * @param sx
+   * @param sy
+   * @param sz
+   * @return
+   */
+  def scale(sx: Double, sy: Double, sz: Double): Transform =
+    new Transform(scalingMatrix(sx, sy, sz) +: transforms)
+
   private def translationMatrix(dx: Double, dy: Double, dz: Double): Matrix =
-    Matrix.matrix(
+    matrix(
       Vector(1, 0, 0, dx),
       Vector(0, 1, 0, dy),
       Vector(0, 0, 1, dz),
+      Vector(0, 0, 0, 1))
+
+  private def scalingMatrix(sx: Double, sy: Double, sz: Double): Matrix =
+    matrix(
+      Vector(sx, 0, 0, 0),
+      Vector(0, sy, 0, 0),
+      Vector(0, 0, sz, 0),
       Vector(0, 0, 0, 1))
 
 }
