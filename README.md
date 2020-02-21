@@ -17,3 +17,8 @@ It now supports matrix-multiplication-based geometric transformations like trans
 The image shows a simple clock face generated with these operations.
 
 ![Chapter 4](images/ch04-clockface.png)
+
+### Chapter 5
+In chapter 5 I implemented the first actual ray tracing to draw the silhouette of a sphere.
+
+![Chapter 5](images/ch05-spheresilhouette.png)
