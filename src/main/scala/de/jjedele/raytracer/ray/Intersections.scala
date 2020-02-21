@@ -22,4 +22,16 @@ case class Intersections(intersections: Intersection*) {
    */
   def apply(i: Int): Intersection = intersections(i)
 
+  /**
+   * Return the intersection closest to the ray's origin.
+   *
+   * Intersections with negative distance units are not considered.
+   * @return
+   */
+  def hit: Option[Intersection] =
+    intersections
+      .filter(_.t >= 0)
+      .sortBy(_.t)
+      .headOption
+
 }
