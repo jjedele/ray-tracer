@@ -1,6 +1,6 @@
 package de.jjedele.raytracer.ray
 
-import de.jjedele.raytracer.Matrix
+import de.jjedele.raytracer.{Matrix, Transform}
 
 /**
  * A ray that has a direction and goes through an origin.
@@ -17,5 +17,13 @@ case class Ray (origin: Matrix, direction: Matrix) {
    */
   def apply(position: Double): Matrix =
     origin + direction * position
+
+  /**
+   * Transform ray by given transformation.
+   * @param transform
+   * @return
+   */
+  def transformBy(transform: Transform): Ray =
+    Ray(transform(origin), transform(direction))
 
 }
