@@ -124,6 +124,11 @@ class Transform(transforms: List[Matrix]) {
       Vector(zX, zY, 1, 0),
       Vector(0, 0, 0, 1))
 
+  override def equals(other: Any): Boolean = other match {
+    case otherTransform: Transform => combined approximatelyEquals otherTransform.combined
+    case _ => false
+  }
+
 }
 
 object Transform {

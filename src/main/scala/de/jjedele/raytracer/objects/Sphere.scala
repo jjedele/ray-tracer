@@ -1,14 +1,15 @@
 package de.jjedele.raytracer.objects
 
-import de.jjedele.raytracer.Matrix
+import de.jjedele.raytracer.{Matrix, Transform}
 import de.jjedele.raytracer.ray.{Intersection, Intersections, Ray}
 
 /**
  * A sphere.
- * @param center
- * @param radius
  */
-case class Sphere(center: Matrix, radius: Double) extends GeometricObject {
+case class Sphere(transform: Transform = Transform()) extends GeometricObject {
+
+  val center = Matrix.point(0, 0, 0)
+  val radius = 1.0
 
   /**
    * Intersect the object with given ray.
@@ -17,10 +18,11 @@ case class Sphere(center: Matrix, radius: Double) extends GeometricObject {
    * @return The intersection points.
    */
   override def intersect(ray: Ray): Intersections = {
-    val sphereToRay = ray.origin - this.center
+    val localRay = ray.transformBy(this.transform.inverse.get)
+    val sphereToRay = localRay.origin - this.center
 
-    val a = ray.direction inner ray.direction
-    val b = ray.direction inner sphereToRay * 2
+    val a = localRay.direction inner localRay.direction
+    val b = localRay.direction inner sphereToRay * 2
     val c = (sphereToRay inner sphereToRay) - 1
 
     val discriminant = math.pow(b, 2) - 4 * a * c
@@ -32,5 +34,13 @@ case class Sphere(center: Matrix, radius: Double) extends GeometricObject {
         Intersection((-b - math.sqrt(discriminant)) / (2 * a), this),
         Intersection((-b + math.sqrt(discriminant)) / (2 * a), this))
   }
+
+  /**
+   * Change the transformation associated with this object.
+   * @param transform
+   * @return
+   */
+  override def withTransform(transform: Transform): Sphere =
+    this.copy(transform=transform)
 
 }
