@@ -1,12 +1,13 @@
 package de.jjedele.raytracer.objects
 
+import de.jjedele.raytracer.lighting.Material
 import de.jjedele.raytracer.{Matrix, Transform}
 import de.jjedele.raytracer.ray.{Intersection, Intersections, Ray}
 
 /**
  * A sphere.
  */
-case class Sphere(transform: Transform = Transform()) extends GeometricObject {
+case class Sphere(transform: Transform = Transform(), material: Material = Material()) extends GeometricObject {
 
   val center = Matrix.point(0, 0, 0)
   val radius = 1.0

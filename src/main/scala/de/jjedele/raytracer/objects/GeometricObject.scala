@@ -1,5 +1,6 @@
 package de.jjedele.raytracer.objects
 
+import de.jjedele.raytracer.lighting.Material
 import de.jjedele.raytracer.{Matrix, Transform}
 import de.jjedele.raytracer.ray.{Intersections, Ray}
 
@@ -33,5 +34,10 @@ trait GeometricObject {
    * @return
    */
   def normalAt(point: Matrix): Matrix
+
+  /**
+   * @return The material associated with the object.
+   */
+  def material: Material
 
 }

@@ -1,5 +1,6 @@
 package de.jjedele.raytracer.ray
 
+import de.jjedele.raytracer.lighting.Material
 import de.jjedele.raytracer.{Matrix, Transform}
 import de.jjedele.raytracer.objects.GeometricObject
 import de.jjedele.raytracer.test.MatrixMatchers
@@ -18,6 +19,8 @@ class IntersectionSpec extends AnyFlatSpec with Matchers with MatrixMatchers wit
     override def withTransform(transform: Transform): GeometricObject = this
 
     override def normalAt(point: Matrix): Matrix = ???
+
+    override def material: Material = ???
   }
 
   "The Intersections object" should "return the closest object intersection as hit if all have positive t values" in {
