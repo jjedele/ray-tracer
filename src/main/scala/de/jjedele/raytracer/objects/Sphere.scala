@@ -43,4 +43,23 @@ case class Sphere(transform: Transform = Transform()) extends GeometricObject {
   override def withTransform(transform: Transform): Sphere =
     this.copy(transform=transform)
 
+  /**
+   * Calculate the surface normal at given point.
+   *
+   * @param point Point is assumed to be on the object. No further checks are done.
+   * @return
+   */
+  override def normalAt(point: Matrix): Matrix = {
+    // TODO handle non-invertible transformations better
+    val pointInObjectSpace = transform.inverse().get.apply(point)
+
+    val normalInObjectSpace = pointInObjectSpace - center
+
+    val normalInWorldSpace = transform.inverse().get.combined.transposed matmul normalInObjectSpace
+    // this is a hack because we actually would need to take the submatrix of the transform at 3,3 not to mess with w
+    normalInWorldSpace(3, 0) = 0
+
+    normalInWorldSpace.normalized
+  }
+
 }

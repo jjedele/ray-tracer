@@ -37,6 +37,18 @@ class Matrix(val rows: Int, val columns: Int, val data: Array[Double], val isTra
       data(row * columns + column)
 
   /**
+   * Update an element.
+   * @param row Row index.
+   * @param column Column index.
+   * @param value New value.
+   */
+  def update(row: Int, column: Int = 0, value: Double): Unit =
+    if (isTransposed)
+      data(row + column * rows) = value
+    else
+      data(row * columns + column) = value
+
+  /**
    * Transpose matrix.
    *
    * @return Matrix such that row and column indexes are swapped.

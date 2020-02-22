@@ -10,6 +10,7 @@ import de.jjedele.raytracer.ray.{Intersection, Intersections, Ray}
 class SphereSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
 
   import Matrix._
+  import math._
 
   "A sphere" should "intersect with a ray in 2 points" in {
     val ray = raytracer.ray.Ray(point(0, 0, -5), direction(0, 0, 1))
@@ -99,6 +100,39 @@ class SphereSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
     val intersections = sphere.intersect(ray)
 
     intersections shouldBe Intersections()
+  }
+
+  it should "return its normal at axial points" in {
+    val sphere = Sphere()
+
+    sphere.normalAt(point(1, 0, 0)) should approximatelyEqual (direction(1, 0, 0))
+    sphere.normalAt(point(0, 1, 0)) should approximatelyEqual (direction(0, 1, 0))
+    sphere.normalAt(point(0, 0, 1)) should approximatelyEqual (direction(0, 0, 1))
+  }
+
+  it should "return its normal at non-axial points" in {
+    val sphere = Sphere()
+
+    val normal = sphere.normalAt(point(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3))
+
+    normal should approximatelyEqual (direction(sqrt(3) / 3, sqrt(3) / 3, sqrt(3) / 3))
+    normal should approximatelyEqual (normal.normalized)
+  }
+
+  it should "return its normal when translated" in {
+    val sphere = Sphere()
+      .withTransform(Transform().translate(0, 1, 0))
+
+    sphere.normalAt(point(0, 1.70711, -0.70711)) should approximatelyEqual(direction(0, 0.70711, -0.70711))
+  }
+
+  it should "return its normal when transformed" in {
+    val sphere = Sphere()
+      .withTransform(Transform()
+        .zRotate(Pi / 5)
+        .scale(1, 0.5, 1))
+
+    sphere.normalAt(point(0, sqrt(2) / 2, -sqrt(2) / 2)) should approximatelyEqual(direction(0, 0.97014, -0.24254))
   }
 
 }

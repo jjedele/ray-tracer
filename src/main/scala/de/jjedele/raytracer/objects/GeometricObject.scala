@@ -1,6 +1,6 @@
 package de.jjedele.raytracer.objects
 
-import de.jjedele.raytracer.Transform
+import de.jjedele.raytracer.{Matrix, Transform}
 import de.jjedele.raytracer.ray.{Intersections, Ray}
 
 /**
@@ -26,5 +26,12 @@ trait GeometricObject {
    * @return
    */
   def withTransform(transform: Transform): GeometricObject
+
+  /**
+   * Calculate the surface normal at given point.
+   * @param point Point is assumed to be on the object. No further checks are done.
+   * @return
+   */
+  def normalAt(point: Matrix): Matrix
 
 }
