@@ -326,6 +326,16 @@ class Matrix(val rows: Int, val columns: Int, val data: Array[Double], val isTra
    */
   def isProjectivePoint: Boolean = isColumnVector && rows == 4 && this(3) == 1
 
+  /**
+   * Reflect this vector at the surface described by the given normal.
+   * @param surfaceNormal
+   * @return
+   */
+  def reflectAt(surfaceNormal: Matrix): Matrix = {
+    require(isProjectiveDirection)
+    this - surfaceNormal * 2 * this.inner(surfaceNormal)
+  }
+
 }
 
 object Matrix {

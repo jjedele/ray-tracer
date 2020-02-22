@@ -8,6 +8,7 @@ import org.scalatest.matchers.should.Matchers
 class MatrixSpec extends AnyFlatSpec with Matchers with MatrixMatchers with OptionValues {
 
   import Matrix._
+  import math._
 
   "A matrix" should "allow to access its elements" in {
     val m = matrix(
@@ -280,6 +281,13 @@ class MatrixSpec extends AnyFlatSpec with Matchers with MatrixMatchers with Opti
   it should "compute cross products" in {
     direction(1, 2, 3) cross direction(2, 3, 4) should approximatelyEqual (direction(-1, 2, -1))
     direction(2, 3, 4) cross direction(1, 2, 3) should approximatelyEqual (direction(1, -2, 1))
+  }
+
+  it should "reflect at surfaces" in {
+    val vector = direction(0, -1, 0)
+    val surfaceNormal = direction(sqrt(2) / 2, sqrt(2) / 2, 0)
+
+    vector.reflectAt(surfaceNormal) should approximatelyEqual (direction(1, 0, 0))
   }
 
 }
