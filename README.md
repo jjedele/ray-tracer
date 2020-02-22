@@ -5,11 +5,15 @@ in [ScalaJS](https://www.scala-js.org).
 
 ## State
 
-### Chapters 1, 2
-In chapters 1 and 2 I developed a basic implementation of vectors.
-Image shows the trajectory of a flying projectile in an environment with gravity and wind.
+### Chapter 6
+I added a simple lighting mechanism based on Phong's reflection model.
 
-![Chapter2](images/ch02-projectile.png) 
+![Chapter 6](images/ch06-sphere.png)
+
+### Chapter 5
+In chapter 5 I implemented the first actual ray tracing to draw the silhouette of a sphere.
+
+![Chapter 5](images/ch05-spheresilhouette.png)
 
 ### Chapters 3, 4
 In chapters 3 and 4 I extended my vector implementation to a more full-blown linear algebra library.
@@ -18,7 +22,8 @@ The image shows a simple clock face generated with these operations.
 
 ![Chapter 4](images/ch04-clockface.png)
 
-### Chapter 5
-In chapter 5 I implemented the first actual ray tracing to draw the silhouette of a sphere.
+### Chapters 1, 2
+In chapters 1 and 2 I developed a basic implementation of vectors.
+Image shows the trajectory of a flying projectile in an environment with gravity and wind.
 
-![Chapter 5](images/ch05-spheresilhouette.png)
+![Chapter2](images/ch02-projectile.png) 
