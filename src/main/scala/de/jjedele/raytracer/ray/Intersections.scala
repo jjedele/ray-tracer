@@ -16,6 +16,14 @@ case class Intersection(t: Double, obj: GeometricObject)
 case class Intersections(intersections: Intersection*) {
 
   /**
+   * Intersections sorted ascending by distance from the
+   * ray origin.
+   */
+  lazy val sorted: Seq[Intersection] =
+    intersections
+      .sortBy(_.t)
+
+  /**
    * Get specific intersection.
    * @param i
    * @return
@@ -29,9 +37,8 @@ case class Intersections(intersections: Intersection*) {
    * @return
    */
   def hit: Option[Intersection] =
-    intersections
+    sorted
       .filter(_.t >= 0)
-      .sortBy(_.t)
       .headOption
 
 }
