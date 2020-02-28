@@ -19,8 +19,8 @@ class SphereSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
     val intersections = sphere.intersect(ray)
 
     intersections shouldBe Intersections(
-      Intersection(4.0, sphere),
-      Intersection(6.0, sphere))
+      Intersection(4.0, ray, sphere),
+      Intersection(6.0, ray, sphere))
   }
 
   it should "be intersected by a ray at a tangent" in {
@@ -30,8 +30,8 @@ class SphereSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
     val intersections = sphere.intersect(ray)
 
     intersections shouldBe Intersections(
-      Intersection(5.0, sphere),
-      Intersection(5.0, sphere))
+      Intersection(5.0, ray, sphere),
+      Intersection(5.0, ray, sphere))
   }
 
   it should "be missed by non-intersecting rays" in {
@@ -50,8 +50,8 @@ class SphereSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
     val intersections = sphere.intersect(ray)
 
     intersections shouldBe Intersections(
-      Intersection(-1.0, sphere),
-      Intersection(+1.0, sphere))
+      Intersection(-1.0, ray, sphere),
+      Intersection(+1.0, ray, sphere))
   }
 
   it should "be intersected by rays originating behind it" in {
@@ -61,8 +61,8 @@ class SphereSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
     val intersections = sphere.intersect(ray)
 
     intersections shouldBe Intersections(
-      Intersection(-6.0, sphere),
-      Intersection(-4.0, sphere))
+      Intersection(-6.0, ray, sphere),
+      Intersection(-4.0, ray, sphere))
   }
 
   it should "have a identity transformation as default" in {
@@ -88,8 +88,8 @@ class SphereSpec extends AnyFlatSpec with Matchers with MatrixMatchers {
     val intersections = sphere.intersect(ray)
 
     intersections shouldBe Intersections(
-      Intersection(3, sphere),
-      Intersection(7, sphere))
+      Intersection(3, ray, sphere),
+      Intersection(7, ray, sphere))
   }
 
   it should "intersect with a ray when translated" in {

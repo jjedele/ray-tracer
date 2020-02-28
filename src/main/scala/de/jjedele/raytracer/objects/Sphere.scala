@@ -32,8 +32,8 @@ case class Sphere(transform: Transform = Transform(), material: Material = Mater
       Intersections()
     else
       Intersections(
-        Intersection((-b - math.sqrt(discriminant)) / (2 * a), this),
-        Intersection((-b + math.sqrt(discriminant)) / (2 * a), this))
+        Intersection((-b - math.sqrt(discriminant)) / (2 * a), ray, this),
+        Intersection((-b + math.sqrt(discriminant)) / (2 * a), ray, this))
   }
 
   /**
